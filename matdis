@@ -1,0 +1,82 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int faktorial(int nilai){
+    int hasil=1;
+    for(int i=1;i<=nilai;i++){
+        hasil *=i;
+    }
+    return hasil;
+}
+
+int main(){
+    int a[100];
+    int n,r,max_perm,no=1;
+
+    cout<<"-----------------------------------------"<<endl;
+    cout<<"       PROGRAM GENERATE PERMUTASI        "<<endl;
+    cout<<"             Oleh M. Farid H             "<<endl;
+    cout<<"-----------------------------------------"<<endl;
+
+    cout<<"\n\nMasukkan nilai n : ";cin>>n;
+
+    for(int i=1;i<=n;i++){
+        cout<<"Masukkan nilai himpunan a["<<i<<"] :";cin>>a[i];
+    }
+
+    cout<<"Masukkan nilai r : ";cin>>r;
+
+    int p=faktorial(n);
+    int pq=faktorial(n-r);
+    max_perm=  p/pq;
+
+    cout<<"\n\nNilai permutasi : "<<max_perm<<endl;
+    cout<<"Tekan Enter untuk melihat hasil generate permutasi...."<<endl;
+    cin.ignore();
+    cin.get();
+
+    for(int i=1;i<=n;i++){
+        for(int j=i+1;j<=n;j++){
+            if(a[i]>a[j]){
+                int temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+    }
+
+    for(int x=1;x<=max_perm;x++){
+        cout<<no<<". ";
+        for(int i=1;i<=r;i++){
+            cout<<a[i]<<" ";
+        }
+        cout<<endl;
+        no++;
+
+        int j=n-1;
+        while(j>=1 && a[j]>=a[j+1])j--;
+        if(j==0)break;
+
+        int k=n;
+        while(a[j]>=a[k])k--;
+
+        int temp=a[j];
+        a[j]=a[k];
+        a[k]=temp;
+
+        int p_dex=n;
+        int s_dex=j+1;
+
+        while(p_dex>s_dex){
+            temp = a[p_dex];
+            a[p_dex]=a[s_dex];
+            a[s_dex]=temp;
+
+            p_dex--;
+            s_dex++;
+        }
+        
+    }
+
+}
