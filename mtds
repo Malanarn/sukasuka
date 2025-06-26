@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+using namespace std;
+
+    int hasil;				
+    int faktorial (int nilai) {
+        hasil = nilai;
+    while(nilai>1)
+ {
+
+    hasil = hasil*(nilai-1);
+    nilai = nilai-1;
+}
+    
+	return hasil;
+	
+}
+                          		
+    main()	{
+    int p,nq,max,x,i,j,n,k,r,s,tr,no ;
+    int a[100];
+    div_t xx;
+      for (i=0;i<100;i++)
+{
+    a[i] =0;
+}
+    printf("\n--------------------PROGRAM GENERATE PERMUTASI--------------------\n\n");
+    
+    printf("Masukan nilai n : ");
+    scanf("%d",&n);
+    for(i=1;i<=n;i++)  
+{
+	printf("Masukan nilai himpunannya a[%d] : ",i);
+    scanf("%d",&a[i]);
+}
+           
+    printf("nilai r : ");
+    scanf("%d",&tr);
+           
+    p=faktorial(n);
+    nq=faktorial(n-tr);
+    if(nq==0)nq=1;
+    max=p/nq;
+   
+    printf("nilai permutasi : %d\n\nHasil generate permutasinya adalah(tekan enter)...\n",max);
+   
+    getche();		
+    no=1;				
+
+   
+    for(x=1;x<=max;x++)	{
+     printf("%3d. ",no);
+    for(i=1;i<=tr;i++)
+     printf("%d",a[i]);
+     printf("\n",a[i]);
+    	no++;
+        j=n-1;
+    while(a[j] > a[j+1])
+        j=j-1 ; 	
+        k=n;
+    while(a[j] > a[k])
+        	k=k-1 ; 
+                                 
+    i=a[k];
+    a[k]=a[j];
+    a[j]=i;
+   
+    r=n;
+    s=j+1;
+    while (r>s)
+{
+     i=a[r];
+	 a[r]=a[s];
+      a[s]=i;
+         r=r-1;
+          s=s+1;
+}
+}
+         
+       
+         
+    system("PAUSE");
+    return EXIT_SUCCESS;
+}
