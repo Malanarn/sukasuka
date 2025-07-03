@@ -1,0 +1,68 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main() {
+    bool ketemu, nolsemua;
+    int matrix[10][10];
+    int i, j, jumlah_simpul, jumlah_sisi, asal, tujuan;
+
+    // Inisialisasi matriks
+    cout << "Masukkan jumlah simpul: ";
+    cin >> jumlah_simpul;
+    cout << "Masukkan jumlah sisi: ";
+    cin >> jumlah_sisi;
+
+    // Set semua elemen matriks ke 0
+    for (i = 1; i <= jumlah_simpul; i++) {
+        for (j = 1; j <= jumlah_simpul; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+
+    // Isi matriks sesuai input graf
+    for (i = 1; i <= jumlah_sisi; i++) {
+        cout << "Simpul asal: ";
+        cin >> asal;
+        cout << "Simpul tujuan: ";
+        cin >> tujuan;
+
+        // Validasi input simpul
+        if (asal < 1 || asal > jumlah_simpul || tujuan < 1 || tujuan > jumlah_simpul) {
+            cout << "Simpul asal atau tujuan tidak valid!" << endl;
+            return 1;
+        }
+
+        matrix[asal][tujuan] = 1;
+        matrix[tujuan][asal] = 1; // Karena graf tidak berarah
+    }
+
+    // Periksa konektivitas graf
+    i = 1;
+    nolsemua = false;
+    while (i <= jumlah_simpul && !nolsemua) {
+        j = 1;
+        ketemu = false;
+        while (j <= jumlah_simpul && !ketemu) {
+            if (matrix[i][j] == 1) {
+                ketemu = true;
+            } else {
+                j++;
+            }
+        }
+        if (!ketemu) {
+            nolsemua = true;
+        } else {
+            i++;
+        }
+    }
+
+    // Output hasil
+    if (nolsemua) {
+        cout << "Graf tidak terhubung" << endl;
+    } else {
+        cout << "Graf terhubung" << endl;
+    }
+
+    return 0;
+}
