@@ -1,3 +1,7 @@
+//ntar int jumlah = a+b+c+d
+itu yg hitung jumlah trs ntar dibagian bawahnya yg total itu diganti hadi jumlah
+
+
 #include<iostream>
 #include<string>
 using namespace std;
