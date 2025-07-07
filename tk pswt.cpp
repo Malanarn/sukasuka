@@ -1,369 +1,184 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <iomanip>
 using namespace std;
 
-const int MAX_PENUMPANG = 100;
-const int MAX_TIKET = 100;
+const int MAKS_TIKET = 100;
+const int MAKS_PENUMPANG = 100;
 
 class Tiket {
 public:
-    string nomor_penerbangan;
-    string asal;
+    string kode;
     string tujuan;
-    string tanggal;
-    string waktu;
     int harga;
-    int kursi_tersedia;
+    bool tersedia;
 
-    void tampilInfo() {
-        cout << "Penerbangan: " << nomor_penerbangan << endl;
-        cout << "Rute: " << asal << " -> " << tujuan << endl;
-        cout << "Tanggal: " << tanggal << endl;
-        cout << "Waktu: " << waktu << endl;
-        cout << "Harga: Rp" << harga << endl;
-        cout << "Kursi tersedia: " << kursi_tersedia << endl;
-        cout << "-------------------------" << endl;
+    void input() {
+        cout << "Kode Tiket: ";
+        cin >> kode;
+        cout << "Tujuan     : ";
+        cin >> tujuan;
+        cout << "Harga      : ";
+        cin >> harga;
+        tersedia = true;
+    }
+
+    void tampil() {
+        if (tersedia) {
+            cout << "Kode: " << kode << ", Tujuan: " << tujuan << ", Harga: " << harga << endl;
+        }
     }
 };
 
 class Penumpang {
 public:
     string nama;
-    string no_ktp;
-    string no_telepon;
-    string nomor_penerbangan;
+    string kodeTiket;
 
-    void tampilInfo() {
-        cout << "Nama: " << nama << endl;
-        cout << "No. KTP: " << no_ktp << endl;
-        cout << "No. Telepon: " << no_telepon << endl;
-        cout << "Nomor Penerbangan: " << nomor_penerbangan << endl;
-        cout << "-------------------------" << endl;
+    void input() {
+        cout << "Nama Penumpang: ";
+        cin >> nama;
+        cout << "Kode Tiket    : ";
+        cin >> kodeTiket;
+    }
+
+    void tampil() {
+        cout << "Nama: " << nama << ", Tiket: " << kodeTiket << endl;
     }
 };
 
-class SistemTiket {
+class SistemTiketPesawat {
 private:
-    Tiket daftar_tiket[MAX_TIKET];
-    Penumpang daftar_penumpang[MAX_PENUMPANG];
-    int jumlah_tiket;
-    int jumlah_penumpang;
+    Tiket daftarTiket[MAKS_TIKET];
+    Penumpang daftarPenumpang[MAKS_PENUMPANG];
+    int jumlahTiket = 0;
+    int jumlahPenumpang = 0;
 
 public:
-    SistemTiket() {
-        jumlah_tiket = 0;
-        jumlah_penumpang = 0;
-    }
-
     void tambahTiket() {
-        if (jumlah_tiket >= MAX_TIKET) {
-            cout << "Maaf, kapasitas tiket sudah penuh." << endl;
-            return;
-        }
-
-        cout << "Masukkan data tiket baru:" << endl;
-        cout << "Nomor Penerbangan: ";
-        cin >> daftar_tiket[jumlah_tiket].nomor_penerbangan;
-        cout << "Asal: ";
-        cin >> daftar_tiket[jumlah_tiket].asal;
-        cout << "Tujuan: ";
-        cin >> daftar_tiket[jumlah_tiket].tujuan;
-        cout << "Tanggal (DD-MM-YYYY): ";
-        cin >> daftar_tiket[jumlah_tiket].tanggal;
-        cout << "Waktu (HH:MM): ";
-        cin >> daftar_tiket[jumlah_tiket].waktu;
-        cout << "Harga: ";
-        cin >> daftar_tiket[jumlah_tiket].harga;
-        cout << "Jumlah Kursi Tersedia: ";
-        cin >> daftar_tiket[jumlah_tiket].kursi_tersedia;
-
-        jumlah_tiket++;
-        cout << "Tiket berhasil ditambahkan!" << endl;
-    }
-
-    void tampilSemuaTiket() {
-        if (jumlah_tiket == 0) {
-            cout << "Tidak ada tiket tersedia." << endl;
-            return;
-        }
-
-        cout << "=== DAFTAR TIKET TERSEDIA ===" << endl;
-        for (int i = 0; i < jumlah_tiket; i++) {
-            daftar_tiket[i].tampilInfo();
+        if (jumlahTiket < MAKS_TIKET) {
+            cout << "\n--- Tambah Tiket Baru ---\n";
+            daftarTiket[jumlahTiket].input();
+            jumlahTiket++;
+        } else {
+            cout << "Kapasitas tiket penuh!\n";
         }
     }
 
-    void cariTiketBerdasarkanHarga() {
-        if (jumlah_tiket == 0) {
-            cout << "Tidak ada tiket tersedia." << endl;
-            return;
+    void tampilkanTiket() {
+        cout << "\n--- Daftar Tiket Tersedia ---\n";
+        for (int i = 0; i < jumlahTiket; i++) {
+            daftarTiket[i].tampil();
         }
+    }
 
-        int harga_maks;
-        cout << "Masukkan harga maksimal yang diinginkan: ";
-        cin >> harga_maks;
-
-        cout << "=== TIKET DENGAN HARGA <= " << harga_maks << " ===" << endl;
+    void cariTiketByHarga(int hargaCari) {
+        cout << "\n--- Tiket dengan Harga " << hargaCari << " ---\n";
         bool ditemukan = false;
-        for (int i = 0; i < jumlah_tiket; i++) {
-            if (daftar_tiket[i].harga <= harga_maks) {
-                daftar_tiket[i].tampilInfo();
+        for (int i = 0; i < jumlahTiket; i++) {
+            if (daftarTiket[i].harga == hargaCari && daftarTiket[i].tersedia) {
+                daftarTiket[i].tampil();
                 ditemukan = true;
             }
         }
-
         if (!ditemukan) {
-            cout << "Tidak ditemukan tiket dengan harga <= " << harga_maks << endl;
+            cout << "Tidak ditemukan tiket dengan harga tersebut.\n";
         }
     }
 
-    void tambahPenumpang() {
-        if (jumlah_penumpang >= MAX_PENUMPANG) {
-            cout << "Maaf, kapasitas penumpang sudah penuh." << endl;
-            return;
-        }
+    void pesanTiket() {
+        if (jumlahPenumpang < MAKS_PENUMPANG) {
+            cout << "\n--- Pemesanan Tiket ---\n";
+            Penumpang p;
+            p.input();
 
-        cout << "Masukkan data penumpang baru:" << endl;
-        cout << "Nama: ";
-        cin.ignore();
-        getline(cin, daftar_penumpang[jumlah_penumpang].nama);
-        cout << "No. KTP: ";
-        cin >> daftar_penumpang[jumlah_penumpang].no_ktp;
-        cout << "No. Telepon: ";
-        cin >> daftar_penumpang[jumlah_penumpang].no_telepon;
-        cout << "Nomor Penerbangan: ";
-        cin >> daftar_penumpang[jumlah_penumpang].nomor_penerbangan;
-
-        // Cek apakah penerbangan ada dan kurangi kursi tersedia
-        bool penerbangan_ditemukan = false;
-        for (int i = 0; i < jumlah_tiket; i++) {
-            if (daftar_tiket[i].nomor_penerbangan == daftar_penumpang[jumlah_penumpang].nomor_penerbangan) {
-                if (daftar_tiket[i].kursi_tersedia > 0) {
-                    daftar_tiket[i].kursi_tersedia--;
-                    penerbangan_ditemukan = true;
+            // Validasi tiket
+            bool valid = false;
+            for (int i = 0; i < jumlahTiket; i++) {
+                if (daftarTiket[i].kode == p.kodeTiket && daftarTiket[i].tersedia) {
+                    valid = true;
+                    daftarPenumpang[jumlahPenumpang++] = p;
+                    daftarTiket[i].tersedia = false;
+                    cout << "Tiket berhasil dipesan!\n";
                     break;
-                } else {
-                    cout << "Maaf, kursi untuk penerbangan ini sudah habis." << endl;
-                    return;
                 }
             }
-        }
-
-        if (!penerbangan_ditemukan) {
-            cout << "Nomor penerbangan tidak ditemukan." << endl;
-            return;
-        }
-
-        jumlah_penumpang++;
-        cout << "Penumpang berhasil ditambahkan!" << endl;
-    }
-
-    void tampilSemuaPenumpang() {
-        if (jumlah_penumpang == 0) {
-            cout << "Tidak ada penumpang terdaftar." << endl;
-            return;
-        }
-
-        cout << "=== DAFTAR PENUMPANG ===" << endl;
-        for (int i = 0; i < jumlah_penumpang; i++) {
-            daftar_penumpang[i].tampilInfo();
+            if (!valid) {
+                cout << "Tiket tidak ditemukan atau tidak tersedia!\n";
+            }
+        } else {
+            cout << "Kapasitas penumpang penuh!\n";
         }
     }
 
-    void updatePenumpang() {
-        if (jumlah_penumpang == 0) {
-            cout << "Tidak ada penumpang terdaftar." << endl;
-            return;
-        }
-
-        string no_ktp;
-        cout << "Masukkan No. KTP penumpang yang akan diupdate: ";
-        cin >> no_ktp;
-
-        for (int i = 0; i < jumlah_penumpang; i++) {
-            if (daftar_penumpang[i].no_ktp == no_ktp) {
-                cout << "Masukkan data baru:" << endl;
-                cout << "Nama (" << daftar_penumpang[i].nama << "): ";
-                cin.ignore();
-                getline(cin, daftar_penumpang[i].nama);
-                cout << "No. Telepon (" << daftar_penumpang[i].no_telepon << "): ";
-                cin >> daftar_penumpang[i].no_telepon;
-                cout << "Nomor Penerbangan (" << daftar_penumpang[i].nomor_penerbangan << "): ";
-                cin >> daftar_penumpang[i].nomor_penerbangan;
-                cout << "Data penumpang berhasil diupdate!" << endl;
+    void hapusTiket(string kode) {
+        for (int i = 0; i < jumlahTiket; i++) {
+            if (daftarTiket[i].kode == kode) {
+                daftarTiket[i].tersedia = false;
+                cout << "Tiket berhasil dihapus (tidak tersedia).\n";
                 return;
             }
         }
-
-        cout << "Penumpang dengan No. KTP " << no_ktp << " tidak ditemukan." << endl;
+        cout << "Tiket tidak ditemukan.\n";
     }
 
-    void hapusPenumpang() {
-        if (jumlah_penumpang == 0) {
-            cout << "Tidak ada penumpang terdaftar." << endl;
-            return;
-        }
-
-        string no_ktp;
-        cout << "Masukkan No. KTP penumpang yang akan dihapus: ";
-        cin >> no_ktp;
-
-        for (int i = 0; i < jumlah_penumpang; i++) {
-            if (daftar_penumpang[i].no_ktp == no_ktp) {
-                // Kembalikan kursi tersedia
-                for (int j = 0; j < jumlah_tiket; j++) {
-                    if (daftar_tiket[j].nomor_penerbangan == daftar_penumpang[i].nomor_penerbangan) {
-                        daftar_tiket[j].kursi_tersedia++;
-                        break;
-                    }
-                }
-
-                // Geser semua elemen setelahnya ke kiri
-                for (int j = i; j < jumlah_penumpang - 1; j++) {
-                    daftar_penumpang[j] = daftar_penumpang[j + 1];
-                }
-
-                jumlah_penumpang--;
-                cout << "Penumpang berhasil dihapus!" << endl;
-                return;
+    void simpanPesananKeFile() {
+        ofstream file("pesanan_tiket.txt");
+        if (file.is_open()) {
+            file << "--- Daftar Pesanan Tiket ---\n";
+            for (int i = 0; i < jumlahPenumpang; i++) {
+                file << "Nama: " << daftarPenumpang[i].nama
+                     << ", Tiket: " << daftarPenumpang[i].kodeTiket << endl;
             }
+            file.close();
+            cout << "Data pesanan berhasil disimpan ke pesanan_tiket.txt\n";
+        } else {
+            cout << "Gagal menyimpan ke file.\n";
         }
-
-        cout << "Penumpang dengan No. KTP " << no_ktp << " tidak ditemukan." << endl;
     }
 
-    void hapusTiket() {
-        if (jumlah_tiket == 0) {
-            cout << "Tidak ada tiket tersedia." << endl;
-            return;
-        }
+    void menu() {
+        int pilihan;
+        do {
+            cout << "\n===== MENU SISTEM TIKET PESAWAT =====\n";
+            cout << "1. Tambah Tiket\n";
+            cout << "2. Tampilkan Tiket\n";
+            cout << "3. Cari Tiket Berdasarkan Harga\n";
+            cout << "4. Pesan Tiket\n";
+            cout << "5. Hapus Tiket\n";
+            cout << "6. Simpan Pesanan ke File\n";
+            cout << "0. Keluar\n";
+            cout << "Pilih: ";
+            cin >> pilihan;
 
-        string nomor_penerbangan;
-        cout << "Masukkan nomor penerbangan tiket yang akan dihapus: ";
-        cin >> nomor_penerbangan;
-
-        for (int i = 0; i < jumlah_tiket; i++) {
-            if (daftar_tiket[i].nomor_penerbangan == nomor_penerbangan) {
-                // Geser semua elemen setelahnya ke kiri
-                for (int j = i; j < jumlah_tiket - 1; j++) {
-                    daftar_tiket[j] = daftar_tiket[j + 1];
+            switch (pilihan) {
+                case 1: tambahTiket(); break;
+                case 2: tampilkanTiket(); break;
+                case 3: {
+                    int harga;
+                    cout << "Masukkan harga yang dicari: ";
+                    cin >> harga;
+                    cariTiketByHarga(harga);
+                    break;
                 }
-
-                jumlah_tiket--;
-                cout << "Tiket berhasil dihapus!" << endl;
-                return;
-            }
-        }
-
-        cout << "Tiket dengan nomor penerbangan " << nomor_penerbangan << " tidak ditemukan." << endl;
-    }
-
-    void cetakTiketKeFile() {
-        if (jumlah_penumpang == 0) {
-            cout << "Tidak ada penumpang terdaftar." << endl;
-            return;
-        }
-
-        string no_ktp;
-        cout << "Masukkan No. KTP penumpang yang akan dicetak tiketnya: ";
-        cin >> no_ktp;
-
-        for (int i = 0; i < jumlah_penumpang; i++) {
-            if (daftar_penumpang[i].no_ktp == no_ktp) {
-                string nama_file = "tiket_" + no_ktp + ".txt";
-                ofstream file(nama_file);
-
-                if (file.is_open()) {
-                    file << "=== TIKET PESAWAT ===" << endl;
-                    file << "Nama: " << daftar_penumpang[i].nama << endl;
-                    file << "No. KTP: " << daftar_penumpang[i].no_ktp << endl;
-                    file << "No. Telepon: " << daftar_penumpang[i].no_telepon << endl;
-                    file << "Nomor Penerbangan: " << daftar_penumpang[i].nomor_penerbangan << endl;
-
-                    // Cari info penerbangan
-                    for (int j = 0; j < jumlah_tiket; j++) {
-                        if (daftar_tiket[j].nomor_penerbangan == daftar_penumpang[i].nomor_penerbangan) {
-                            file << "Rute: " << daftar_tiket[j].asal << " -> " << daftar_tiket[j].tujuan << endl;
-                            file << "Tanggal: " << daftar_tiket[j].tanggal << endl;
-                            file << "Waktu: " << daftar_tiket[j].waktu << endl;
-                            file << "Harga: Rp" << daftar_tiket[j].harga << endl;
-                            break;
-                        }
-                    }
-
-                    file.close();
-                    cout << "Tiket berhasil dicetak ke file " << nama_file << endl;
-                } else {
-                    cout << "Gagal membuka file untuk ditulis." << endl;
+                case 4: pesanTiket(); break;
+                case 5: {
+                    string kode;
+                    cout << "Masukkan kode tiket yang ingin dihapus: ";
+                    cin >> kode;
+                    hapusTiket(kode);
+                    break;
                 }
-                return;
+                case 6: simpanPesananKeFile(); break;
+                case 0: cout << "Keluar dari program.\n"; break;
+                default: cout << "Pilihan tidak valid.\n";
             }
-        }
-
-        cout << "Penumpang dengan No. KTP " << no_ktp << " tidak ditemukan." << endl;
+        } while (pilihan != 0);
     }
 };
 
-void tampilMenu() {
-    cout << "\n=== SISTEM PEMESANAN TIKET PESAWAT ===" << endl;
-    cout << "1. Tambah Tiket" << endl;
-    cout << "2. Tampilkan Semua Tiket" << endl;
-    cout << "3. Cari Tiket Berdasarkan Harga" << endl;
-    cout << "4. Tambah Penumpang" << endl;
-    cout << "5. Tampilkan Semua Penumpang" << endl;
-    cout << "6. Update Data Penumpang" << endl;
-    cout << "7. Hapus Penumpang" << endl;
-    cout << "8. Hapus Tiket" << endl;
-    cout << "9. Cetak Tiket ke File" << endl;
-    cout << "0. Keluar" << endl;
-    cout << "Pilihan: ";
-}
-
 int main() {
-    SistemTiket sistem;
-    int pilihan;
-
-    do {
-        tampilMenu();
-        cin >> pilihan;
-
-        switch (pilihan) {
-            case 1:
-                sistem.tambahTiket();
-                break;
-            case 2:
-                sistem.tampilSemuaTiket();
-                break;
-            case 3:
-                sistem.cariTiketBerdasarkanHarga();
-                break;
-            case 4:
-                sistem.tambahPenumpang();
-                break;
-            case 5:
-                sistem.tampilSemuaPenumpang();
-                break;
-            case 6:
-                sistem.updatePenumpang();
-                break;
-            case 7:
-                sistem.hapusPenumpang();
-                break;
-            case 8:
-                sistem.hapusTiket();
-                break;
-            case 9:
-                sistem.cetakTiketKeFile();
-                break;
-            case 0:
-                cout << "Terima kasih telah menggunakan sistem kami." << endl;
-                break;
-            default:
-                cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
-        }
-    } while (pilihan != 0);
-
-    return 0;
-}
+    SistemTiketPesawat sistem;
+    sistem.menu();
+	return 0;
+	}
