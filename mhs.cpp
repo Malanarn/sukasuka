@@ -3,8 +3,6 @@
 #include <string>
 using namespace std;
 
-#define MAX 100
-
 class MataKuliah {
 public:
     string kode;
@@ -30,17 +28,21 @@ public:
 
 class PortalMahasiswa {
 private:
-    MataKuliah matkul[MAX];
-    int jumlah = 0;
+    MataKuliah matkul[50]; // Maksimal 50 mata kuliah
+    int jumlah;            // Banyak matkul yang didaftarkan
     const int biayaPerSKS = 150000;
 
 public:
+    PortalMahasiswa() {
+        jumlah = 0;
+    }
+
     void daftarMatkul() {
-        if (jumlah >= MAX) {
-            cout << "Kapasitas matkul penuh.\n";
+        if (jumlah >= 50) {
+            cout << "Kapasitas mata kuliah penuh.\n";
             return;
         }
-        cout << "\nMasukkan data matkul ke-" << jumlah + 1 << ":\n";
+        cout << "\nMasukkan data mata kuliah ke-" << (jumlah + 1) << ":\n";
         matkul[jumlah].input();
         jumlah++;
     }
@@ -73,7 +75,7 @@ public:
         }
     }
 
-    void cariMatkul(string keyword) {
+    void cariMatkul(const string& keyword) {
         bool ditemukan = false;
         for (int i = 0; i < jumlah; i++) {
             if (matkul[i].nama.find(keyword) != string::npos || matkul[i].kode == keyword) {
@@ -88,14 +90,14 @@ public:
     void simpanKRSKeFile() {
         ofstream file("KRS.txt");
         if (!file) {
-            cout << "Gagal menyimpan file.\n";
+            cout << "Gagal membuka file untuk disimpan.\n";
             return;
         }
         for (int i = 0; i < jumlah; i++) {
             file << matkul[i].kode << "," << matkul[i].nama << "," << matkul[i].sks << "," << matkul[i].nilai << endl;
         }
         file.close();
-        cout << "Data KRS berhasil disimpan ke KRS.txt\n";
+        cout << "KRS berhasil disimpan ke KRS.txt\n";
     }
 
     void bacaKRSdariFile() {
@@ -104,6 +106,7 @@ public:
             cout << "File KRS.txt tidak ditemukan.\n";
             return;
         }
+
         string kode, nama;
         int sks;
         float nilai;
@@ -170,9 +173,7 @@ int main() {
         default:
             cout << "Pilihan tidak valid!\n";
         }
-
     } while (pilihan != 0);
 
     return 0;
 }
-
