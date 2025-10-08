@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+class Rekursi {
+public:
+    int jumlahRekursi(int x, int y) {
+        if (x > y)
+            return 0;
+        cout << x;
+        if (x < y) cout << " + ";
+        return x + jumlahRekursi(x + 1, y);
+    }
+
+    void tampilRekursi(int x, int y) {
+        cout << "\nProses penjumlahan rekursif dari " << x
+             << " sampai " << y << ":\n";
+        int hasil = jumlahRekursi(x, y);
+        cout << " = " << hasil << endl;
+    }
+};
+
+int main() {
+    Rekursi rek;
+
+    int r1, r2;
+    cout << "\n=== INPUT UNTUK REKURSI ===" << endl;
+    cout << "Masukkan batas awal  : ";
+    cin >> r1;
+    cout << "Masukkan batas akhir : ";
+    cin >> r2;
+
+    cout << "\n=== FUNGSI REKURSI ===" << endl;
+    rek.tampilRekursi(r1, r2);
+
+    return 0;
+}
