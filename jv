@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+//        int a = 10;
+//        int b = 2;
+//
+//        int d = a*b;
+//        int e = a/b;
+//
+//        System.out.println("a + b = "+(a+b));
+//        System.out.println("a - b = "+(a-b));
+//        System.out.println("a * b = "+d);
+//        System.out.println("a / b = "+e);
+
+//        String namaLengkap = "Putri Dian Ningsih";
+//        String nim = "2300018111";
+//        String jurusan = "Informatika";
+//        String alamat = "Yogyakarta";
+//
+//        System.out.println("Nama = "+namaLengkap);
+//        System.out.println("NIM = "+nim);
+//        System.out.println("Jurusan = "+jurusan);
+//        System.out.println("Alamat = "+alamat);
+
+        int pilihan;
+        int jawab;
+        int panjang, lebar, sisi;
+        do {
+        System.out.println("PROGRAM HITUNG BANGUN DATAR");
+        System.out.println("1. Persegi");
+        System.out.println("2. Persegi Panjang");
+        System.out.print("PILIH BANGUN DATAR: ");
+        pilihan = input.nextInt();
+        if (pilihan==1){
+            System.out.print("Masukkan sisi: ");
+            sisi = input.nextInt();
+            System.out.println("Luas persegi: "+(sisi*sisi));
+            System.out.println("Keliling persegi: "+(4*sisi));
+        }else if(pilihan==2){
+            System.out.print("Masukkan panjang: ");
+            panjang = input.nextInt();
+            System.out.print("Masukkan lebar: ");
+            lebar = input.nextInt();
+            System.out.println("Luas persegi panjang: "+(panjang*lebar));
+            System.out.println("Keliling persegi panjang: "+(2*(panjang+lebar)));
+            }
+
+        System.out.println("Apakah anda ingin mengulang?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            System.out.print("Pilihan Anda: ");
+            jawab = input.nextInt();
+        }while (jawab != 2);{
+            System.out.println("Anda keluar dari program");
+        };
+   }
+}
