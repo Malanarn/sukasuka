@@ -1,0 +1,33 @@
+// File: PersegiPanjang.java
+class PersegiPanjang {
+    double panjang;
+    double lebar;
+
+    // Constructor
+    PersegiPanjang(double panjang, double lebar) {
+        this.panjang = panjang;
+        this.lebar = lebar;
+    }
+
+    // Method menghitung luas
+    double hitungLuas() {
+        return panjang * lebar;
+    }
+
+    // Method menghitung keliling
+    double hitungKeliling() {
+        return 2 * (panjang + lebar);
+    }
+}
+
+// File: MainPersegiPanjang.java
+public class MainPersegiPanjang {
+    public static void main(String[] args) {
+        PersegiPanjang p1 = new PersegiPanjang(10, 5);
+
+        System.out.println("Panjang: " + p1.panjang);
+        System.out.println("Lebar  : " + p1.lebar);
+        System.out.println("Luas   : " + p1.hitungLuas());
+        System.out.println("Keliling: " + p1.hitungKeliling());
+    }
+}
