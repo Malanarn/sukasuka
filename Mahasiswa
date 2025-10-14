@@ -1,0 +1,49 @@
+// File: Mahasiswa.java
+class Mahasiswa {
+    String nama;
+    double ipk;
+
+    // Constructor
+    Mahasiswa(String nama, double ipk) {
+        this.nama = nama;
+        this.ipk = ipk;
+    }
+
+    // Method untuk menentukan kategori prestasi
+    String kategori() {
+        if (ipk >= 3.50) {
+            return "Cumlaude";
+        } else if (ipk >= 3.00) {
+            return "Sangat Baik";
+        } else if (ipk >= 2.50) {
+            return "Baik";
+        } else {
+            return "Cukup";
+        }
+    }
+
+    // Method untuk menampilkan data mahasiswa
+    void tampilkanData() {
+        System.out.println("Nama: " + nama);
+        System.out.println("IPK : " + ipk);
+        System.out.println("Kategori: " + kategori());
+    }
+}
+
+// File: MainMahasiswa.java
+public class MainMahasiswa {
+    public static void main(String[] args) {
+        Mahasiswa m1 = new Mahasiswa("Andi", 3.75);
+        Mahasiswa m2 = new Mahasiswa("Budi", 3.20);
+        Mahasiswa m3 = new Mahasiswa("Citra", 2.80);
+        Mahasiswa m4 = new Mahasiswa("Dewi", 2.30);
+
+        m1.tampilkanData();
+        System.out.println();
+        m2.tampilkanData();
+        System.out.println();
+        m3.tampilkanData();
+        System.out.println();
+        m4.tampilkanData();
+    }
+}
