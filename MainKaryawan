@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class MainKaryawan {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        // Input data awal
+        System.out.print("Masukkan Nama   : ");
+        String nama = input.nextLine();
+
+        System.out.print("Masukkan NIM    : ");
+        String nim = input.nextLine();
+
+        System.out.print("Masukkan Alamat : ");
+        String alamat = input.nextLine();
+
+        System.out.print("Masukkan Jabatan: ");
+        String jabatan = input.nextLine();
+
+        // Membuat objek karyawan
+        Karyawan k1 = new Karyawan(nama, nim, alamat, jabatan);
+
+        // Menampilkan data awal
+        System.out.println();
+        k1.tampilkanData();
+
+        // Tanya apakah mau ubah jabatan
+        System.out.print("\nApakah mau ubah jabatan? (ya/tidak): ");
+        String pilihan = input.nextLine();
+
+        if (pilihan.equalsIgnoreCase("ya")) {
+            System.out.println("\n=== Ubah Jabatan ===");
+            System.out.print("Masukkan Jabatan Lama: ");
+            String jabatanLama = input.nextLine();
+
+            System.out.print("Masukkan Jabatan Baru: ");
+            String jabatanBaru = input.nextLine();
+
+            // Proses ubah jabatan
+            k1.ubahJabatan(jabatanLama, jabatanBaru);
+
+            // Menampilkan data setelah perubahan
+            System.out.println("\n=== Data Setelah Perubahan ===");
+            k1.tampilkanData();
+        } else {
+            System.out.println("\nTidak ada perubahan jabatan.");
+        }
+
+        input.close();
+    }
+}
