@@ -1,0 +1,84 @@
+#include <iostream>
+using namespace std;
+
+struct KTP {
+    int nik;
+    string nama;
+    string alamat;
+    int tgl;
+    KTP* next;
+};
+
+KTP* head = nullptr;
+
+void tambahData() {
+    KTP* baru = new KTP;
+
+    cout << "Masukkan nik       : ";
+    cin >> baru->nik;
+    cin.ignore();
+    cout << "Masukkan nama      : ";
+    getline(cin, baru->nama);
+    cout << "Masukkan alamat    : ";
+    getline(cin, baru->alamat);
+    cout << "Masukkan tgl lahir : ";
+    cin >> baru->tgl;
+
+    baru->next = nullptr;
+
+    if (head == nullptr) {
+        head = baru;
+    } else {
+        KTP* temp = head;
+        while (temp->next != nullptr)
+            temp = temp->next;
+        temp->next = baru;
+    }
+}
+
+void tampilData() {
+    cout << "======== DAFTAR KTP ========" << endl;
+    if (head == nullptr) {
+        cout << "Data masih kosong" << endl;
+        return;
+    }
+
+    KTP* temp = head;
+    int i = 1;
+    while (temp != nullptr) {
+        cout << "Data ke-" << i++ << endl;
+        cout << "NIK        : " << temp->nik << endl;
+        cout << "Nama       : " << temp->nama << endl;
+        cout << "Alamat     : " << temp->alamat << endl;
+        cout << "Tgl Lahir  : " << temp->tgl << endl;
+        temp = temp->next;
+    }
+}
+
+void menuAwal() {
+    int pil;
+
+    do {
+        cout << "======== MENU ========" << endl;
+        cout << "1. Tambah data KTP" << endl;
+        cout << "2. Tampilkan data KTP" << endl;
+        cout << "0. Keluar" << endl;
+        cout << "Pilih menu : ";
+        cin >> pil;
+
+        if (pil == 1) {
+            tambahData();
+        } else if (pil == 2) {
+            tampilData();
+        } else if (pil == 0) {
+            cout << "Thanks" << endl;
+        } else {
+            cout << "Pilihan tidak tersedia" << endl;
+        }
+    } while (pil != 0);
+}
+
+int main() {
+    menuAwal();
+    return 0;
+}
