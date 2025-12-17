@@ -1,0 +1,122 @@
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    string data;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+TreeNode* createNode(int data) {
+    TreeNode* newNode = new TreeNode();
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+struct QueueNode {
+    TreeNode* treeNode;
+    QueueNode* next;
+};
+
+QueueNode* front = NULL;
+QueueNode* rear = NULL;
+
+bool isQueueEmpty() {
+    return front == NULL;
+}
+
+void enqueue(TreeNode* t) {
+    QueueNode* temp = new QueueNode();
+    temp->treeNode = t;
+    temp->next = NULL;
+    if (front == NULL) {
+        front = rear = temp;
+    } else {
+        rear->next = temp;
+        rear = temp;
+    }
+}
+
+TreeNode* dequeue() {
+    if (isQueueEmpty()) return NULL;
+    QueueNode* temp = front;
+    TreeNode* data = temp->treeNode;
+    front = front->next;
+    if (front == NULL) rear = NULL;
+    delete temp;
+    return data;
+}
+
+void PreOrder(TreeNode* root) {
+    if (root != NULL) {
+        cout << root->data << " ";
+        PreOrder(root->left);
+        PreOrder(root->right);
+    }
+}
+
+void InOrder(TreeNode* root) {
+    if (root != NULL) {
+        InOrder(root->left);
+        cout << root->data << " ";
+        InOrder(root->right);
+    }
+}
+
+void PostOrder(TreeNode* root) {
+    if (root != NULL) {
+        PostOrder(root->left);
+        PostOrder(root->right);
+        cout << root->data << " ";
+    }
+}
+
+void LevelOrder(TreeNode* root) {
+    if (root == NULL) return;
+    enqueue(root);
+    while (!isQueueEmpty()) {
+        TreeNode* current = dequeue();
+        cout << current->data << " ";
+        if (current->left != NULL) enqueue(current->left);
+        if (current->right != NULL) enqueue(current->right);
+    }
+}
+
+int main() {
+    int n = 12;
+    char val;
+    TreeNode* root = NULL;
+
+    for (int i = 1; i <= n; i++) {
+        cout << "Masukkan data ke-" << i << ": ";
+        cin >> val;
+
+        TreeNode* newNode = createNode(val);
+
+        if (root == NULL) {
+            root = newNode;
+            enqueue(root);
+        } else {
+            TreeNode* parent = front->treeNode;
+            if (parent->left == NULL) {
+                parent->left = newNode;
+            } else {
+                parent->right = newNode;
+                dequeue();
+            }
+            enqueue(newNode);
+        }
+    }
+
+    while(!isQueueEmpty()) dequeue();
+
+    cout << "\n--- HASIL TRAVERSAL ---" << endl;
+    cout << "PreOrder   : "; PreOrder(root); cout << endl;
+    cout << "InOrder    : "; InOrder(root); cout << endl;
+    cout << "PostOrder  : "; PostOrder(root); cout << endl;
+    cout << "LevelOrder : "; LevelOrder(root); cout << endl;
+
+    return 0;
+}
