@@ -1,0 +1,107 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct tree_node {
+    char data;
+    tree_node* left;
+    tree_node* right;
+};
+
+tree_node* newNode(char data) {
+    tree_node* node = new tree_node();
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+
+tree_node* insert(tree_node* root, char data) {
+    if (root == NULL)
+        return newNode(data);
+
+    if (data < root->data)
+        root->left = insert(root->left, data);
+    else
+        root->right = insert(root->right, data);
+
+    return root;
+}
+
+void preOrder(tree_node* root) {
+    if (root != NULL) {
+        cout << root->data << " ";
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+void inOrder(tree_node* root) {
+    if (root != NULL) {
+        inOrder(root->left);
+        cout << root->data << " ";
+        inOrder(root->right);
+    }
+}
+
+void postOrder(tree_node* root) {
+    if (root != NULL) {
+        postOrder(root->left);
+        postOrder(root->right);
+        cout << root->data << " ";
+    }
+}
+
+void levelOrder(tree_node* root) {
+    if (root == NULL) return;
+
+    queue<tree_node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        tree_node* current = q.front();
+        q.pop();
+
+        cout << current->data << " ";
+
+        if (current->left != NULL)
+            q.push(current->left);
+        if (current->right != NULL)
+            q.push(current->right);
+    }
+}
+
+int main() {
+    cout << "=== POST TEST (TRAVERSAL TREE) ===" << endl;
+
+    char data[] = {'J','R','D','G','T','E','M','H','P','A','F','Q'};
+    int n = sizeof(data) / sizeof(data[0]);
+
+    tree_node* root = NULL;
+    for (int i = 0; i < n; i++) {
+        root = insert(root, data[i]);
+    }
+
+    cout << "Input data: ";
+    for (char c : data) cout << c << " ";
+    cout << endl << endl;
+
+    cout << "Kunjungan Inorder   : ";
+    inOrder(root);
+    cout << endl;
+
+    cout << "Kunjungan Preorder  : ";
+    preOrder(root);
+    cout << endl;
+
+    cout << "Kunjungan Postorder : ";
+    postOrder(root);
+    cout << endl;
+
+    cout << "Kunjungan LevelOrder: ";
+    levelOrder(root);
+    cout << endl;
+
+    return 0;
+}
